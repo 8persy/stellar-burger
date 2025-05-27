@@ -5,8 +5,8 @@ import {
   selectOrderRequest,
   selectConstructorItems,
   selectOrderModalData,
-  makeOrderRequest,
-  fetchNewOrder
+  fetchNewOrder,
+  closeOrderRequest
 } from '../../slices/stellarBurgerSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../services/store';
@@ -18,18 +18,23 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = useSelector(selectOrderModalData);
 
   const onOrderClick = () => {
-    if (
-      constructorItems.bun.price === 0 ||
-      constructorItems.ingredients.length === 0
-    )
-      return;
-    dispatch(fetchNewOrder(['abc']));
+    if (constructorItems.bun._id && constructorItems.ingredients.length) {
+      dispatch(
+        fetchNewOrder([
+          constructorItems?.bun?._id,
+          ...constructorItems.ingredients.map((item) => item._id),
+          constructorItems.bun._id
+        ])
+      );
+    }
   };
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => {
+    dispatch(closeOrderRequest());
+  };
 
   const price = useMemo(
     () =>
-      (constructorItems.bun ? constructorItems.bun.price * 2 : 0) +
+      (constructorItems.bun ? constructorItems.bun.price! * 2 : 0) +
       constructorItems.ingredients.reduce(
         (s: number, v: TIngredient) => s + v.price,
         0

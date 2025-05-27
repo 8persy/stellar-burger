@@ -46,7 +46,6 @@ export const Profile: FC = () => {
       [e.target.name]: e.target.value
     }));
   };
-
   return (
     <ProfileUI
       formValue={formValue}
@@ -56,6 +55,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };
