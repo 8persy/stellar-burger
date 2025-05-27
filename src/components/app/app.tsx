@@ -22,7 +22,12 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../services/store';
 import { getCookie } from '../../utils/cookie';
-import { fetchFeed, getUserThunk, init } from '../../slices/stellarBurgerSlice';
+import {
+  fetchFeed,
+  fetchIngredients,
+  getUserThunk,
+  init
+} from '../../slices/stellarBurgerSlice';
 
 export const App = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -31,6 +36,7 @@ export const App = () => {
     dispatch(fetchFeed());
     if (token) {
       dispatch(getUserThunk());
+      dispatch(fetchIngredients());
     } else {
       dispatch(init());
     }
