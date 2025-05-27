@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/store';
 import { selectLoading } from '../../slices/stellarBurgerSlice';
 
 import styles from './constructor-page.module.css';
@@ -9,7 +9,7 @@ import { Preloader } from '@ui';
 import { FC } from 'react';
 
 export const ConstructorPage: FC = () => {
-  const isIngredientsLoading = useSelector(selectLoading);
+  const isIngredientsLoading = useAppSelector(selectLoading);
 
   return (
     <>

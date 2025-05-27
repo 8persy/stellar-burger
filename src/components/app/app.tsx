@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import '../../index.css';
 import styles from './app.module.css';
@@ -22,7 +21,6 @@ import {
   ProtectedRoute
 } from '@components';
 import { getCookie } from '../../utils/cookie';
-import { AppDispatch } from '../../services/store';
 import {
   closeModal,
   fetchFeed,
@@ -34,16 +32,17 @@ import {
   selectIsModalOpened,
   selectOrders
 } from '../../slices/stellarBurgerSlice';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 
 export const App = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const backgroundLocation = location.state?.background;
-  const isModalOpened = useSelector(selectIsModalOpened);
+  const isModalOpened = useAppSelector(selectIsModalOpened);
   const token = getCookie('accessToken');
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const ingredients = useSelector(selectIngredients);
-  const feed = useSelector(selectOrders);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const ingredients = useAppSelector(selectIngredients);
+  const feed = useAppSelector(selectOrders);
   useEffect(() => {
     if (!isAuthenticated && token) {
       dispatch(getUserThunk()).then(() => dispatch(init()));
@@ -56,7 +55,7 @@ export const App = () => {
     if (!feed.length) {
       dispatch(fetchFeed());
     }
-  });
+  }, []);
 
   return (
     <div className={styles.app}>
