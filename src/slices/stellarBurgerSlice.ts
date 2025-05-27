@@ -163,6 +163,10 @@ const stellarBurgerSlice = createSlice({
       })
       .addCase(getUserThunk.pending, (state) => {
         state.loading = true;
+        state.isAuthenticated = false;
+        state.user = initUser;
+        deleteCookie('accessToken');
+        localStorage.removeItem('refreshToken');
       })
       .addCase(getUserThunk.rejected, (state) => {
         state.loading = false;
