@@ -45,7 +45,7 @@ export const App = () => {
   return (
     <Routes>
       <Route
-        path="*"
+        path='*'
         element={
           <div className={styles.app}>
             <AppHeader />
@@ -54,7 +54,7 @@ export const App = () => {
         }
       />
       <Route
-        path="/"
+        path='/'
         element={
           <div className={styles.app}>
             <AppHeader />
@@ -63,7 +63,7 @@ export const App = () => {
         }
       />
       <Route
-        path="/feed"
+        path='/feed'
         element={
           <div className={styles.app}>
             <AppHeader />
@@ -71,44 +71,52 @@ export const App = () => {
           </div>
         }
       />
-      <Route // TODO: protect
-        path="/login"
+      <Route
+        path='/login'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <Login />
-          </div>
+          <ProtectedRoute unAuthOnly={true}>
+            <div className={styles.app}>
+              <AppHeader />
+              <Login />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
-        path="/register"
+      <Route
+        path='/register'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <Register />
-          </div>
+          <ProtectedRoute unAuthOnly={true}>
+            <div className={styles.app}>
+              <AppHeader />
+              <Register />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
-        path="/forgot-password"
+      <Route
+        path='/forgot-password'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <ForgotPassword />
-          </div>
+          <ProtectedRoute>
+            <div className={styles.app}>
+              <AppHeader />
+              <ForgotPassword />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
-        path="/reset-password"
+      <Route
+        path='/reset-password'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <ResetPassword />
-          </div>
+          <ProtectedRoute>
+            <div className={styles.app}>
+              <AppHeader />
+              <ResetPassword />
+            </div>
+          </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
-        path="/profile"
+      <Route
+        path='/profile'
         element={
           <ProtectedRoute>
             <div className={styles.app}>
@@ -118,17 +126,19 @@ export const App = () => {
           </ProtectedRoute>
         }
       />
-      <Route // TODO: protect
-        path="/profile/orders"
+      <Route
+        path='/profile/orders'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <ProfileOrders />
-          </div>
+          <ProtectedRoute>
+            <div className={styles.app}>
+              <AppHeader />
+              <ProfileOrders />
+            </div>
+          </ProtectedRoute>
         }
       />
       <Route // TODO: modal
-        path="/feed/:number"
+        path='/feed/:number'
         element={
           <div className={styles.app}>
             <AppHeader />
@@ -137,7 +147,7 @@ export const App = () => {
         }
       />
       <Route // TODO: modal
-        path="/ingredients/:id"
+        path='/ingredients/:id'
         element={
           <div className={styles.app}>
             <AppHeader />
@@ -145,13 +155,15 @@ export const App = () => {
           </div>
         }
       />
-      <Route // TODO: modal, protect
-        path="/profile/orders/:number"
+      <Route // TODO: modal
+        path='/profile/orders/:number'
         element={
-          <div className={styles.app}>
-            <AppHeader />
-            <OrderInfo />
-          </div>
+          <ProtectedRoute>
+            <div className={styles.app}>
+              <AppHeader />
+              <OrderInfo />
+            </div>
+          </ProtectedRoute>
         }
       />
     </Routes>
