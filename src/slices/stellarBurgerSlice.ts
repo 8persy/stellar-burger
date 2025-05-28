@@ -22,7 +22,6 @@ import {
 import { deleteCookie, setCookie } from '../utils/cookie';
 import { v4 as uuidv4 } from 'uuid';
 
-
 type TInitialState = {
   ingredients: TIngredient[];
   loading: boolean;
