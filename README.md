@@ -24,14 +24,3 @@ npm run start
 yarn
 yarn start
 ```
-## Сборка
-
-```
-npm run build
-```
-
-или
-
-```
-yarn build
-```
