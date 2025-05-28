@@ -9,10 +9,17 @@ import {
 } from '@zlden/react-developer-burger-ui-components';
 
 import { TBurgerIngredientUIProps } from './type';
+import { useAppDispatch } from '../../../services/store';
+import { openModal } from '../../../slices/stellarBurgerSlice';
 
 export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
   ({ ingredient, count, handleAdd, locationState }) => {
     const { image, price, name, _id } = ingredient;
+    const dispatch = useAppDispatch();
+
+    const onClick = () => {
+      dispatch(openModal());
+    };
 
     return (
       <li className={styles.container}>
@@ -20,17 +27,18 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
           className={styles.article}
           to={`/ingredients/${_id}`}
           state={locationState}
+          onClick={onClick}
         >
           {count && <Counter count={count} />}
-          <img className={styles.img} src={image} alt='картинка ингредиента.' />
+          <img className={styles.img} src={image} alt="картинка ингредиента." />
           <div className={`${styles.cost} mt-2 mb-2`}>
-            <p className='text text_type_digits-default mr-2'>{price}</p>
-            <CurrencyIcon type='primary' />
+            <p className="text text_type_digits-default mr-2">{price}</p>
+            <CurrencyIcon type="primary" />
           </div>
           <p className={`text text_type_main-default ${styles.text}`}>{name}</p>
         </Link>
         <AddButton
-          text='Добавить'
+          text="Добавить"
           onClick={handleAdd}
           extraClass={`${styles.addButton} mt-8`}
         />
