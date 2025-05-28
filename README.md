@@ -1,19 +1,37 @@
-# Проектная работа 11-го спринта
+# Проектная работа "Stellar Burger"
 
-[Макет](<https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-Проектные-задачи-(3-месяца)_external_link?type=design&node-id=0-1&mode=design>)
+Стек: HTML, SCSS, TS, Webpack, React
 
-[Чеклист](https://www.notion.so/praktikum/0527c10b723d4873aa75686bad54b32e?pvs=4)
+Структура проекта:
+- src/ — исходные файлы проекта
+- src/components/ — папка с TS компонентами
+- src/stories/ — папка со story books
 
-## Этапы работы:
+## Установка и запуск
+Создать файл .env  в корне 
+вставить в него BURGER_API_URL=https://norma.nomoreparties.space/api
 
-1. Разверните проект и ознакомьтесь с кодом. Все необходимые вам компоненты уже созданы и лежат в папке `src/components`
+Для установки и запуска проекта необходимо выполнить команды
 
-2. Настройте роутинг.
+```
+npm install
+npm run start
+```
 
-3. Напишите функционал запросов данных с сервера, используя `Redux` и глобальный `store`. Сами "ручки" уже прописаны и лежат в `utils/burger-api.ts`
+или
 
-4. Настройте авторизацию и создайте защищённые роуты.
+```
+yarn
+yarn start
+```
+## Сборка
 
-## Важно:
+```
+npm run build
+```
 
-Для корректной работы запросов к серверу необходимо добавить переменную BURGER_API_URL в окружение. Сама ссылка находится в файле `.env.example`.
+или
+
+```
+yarn build
+```
