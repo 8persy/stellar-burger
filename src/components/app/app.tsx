@@ -20,7 +20,7 @@ import {
   OrderInfo,
   ProtectedRoute
 } from '@components';
-import { getCookie } from '../../utils/cookie';
+import { getCookie, deleteCookie } from '../../utils/cookie';
 import {
   closeModal,
   fetchFeed,
@@ -45,7 +45,15 @@ export const App = () => {
   const feed = useAppSelector(selectOrders);
   useEffect(() => {
     if (!isAuthenticated && token) {
-      dispatch(getUserThunk()).then(() => dispatch(init()));
+      dispatch(getUserThunk())
+        .unwrap()
+        .then(() => {
+          dispatch(init());
+        })
+        .catch((e) => {
+          deleteCookie('accessToken');
+          localStorage.removeItem('refreshToken');
+        });
     } else {
       dispatch(init());
     }
@@ -67,11 +75,11 @@ export const App = () => {
     <div className={styles.app}>
       <AppHeader />
       <Routes location={backgroundLocation || location}>
-        <Route path='*' element={<NotFound404 />} />
-        <Route path='/' element={<ConstructorPage />} />
-        <Route path='/feed' element={<Feed />} />
+        <Route path="*" element={<NotFound404 />} />
+        <Route path="/" element={<ConstructorPage />} />
+        <Route path="/feed" element={<Feed />} />
         <Route
-          path='/login'
+          path="/login"
           element={
             <ProtectedRoute unAuthOnly>
               <Login />
@@ -79,7 +87,7 @@ export const App = () => {
           }
         />
         <Route
-          path='/register'
+          path="/register"
           element={
             <ProtectedRoute unAuthOnly>
               <Register />
@@ -87,7 +95,7 @@ export const App = () => {
           }
         />
         <Route
-          path='/forgot-password'
+          path="/forgot-password"
           element={
             <ProtectedRoute unAuthOnly>
               <ForgotPassword />
@@ -95,7 +103,7 @@ export const App = () => {
           }
         />
         <Route
-          path='/reset-password'
+          path="/reset-password"
           element={
             <ProtectedRoute unAuthOnly>
               <ResetPassword />
@@ -103,7 +111,7 @@ export const App = () => {
           }
         />
         <Route
-          path='/profile'
+          path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
@@ -111,17 +119,17 @@ export const App = () => {
           }
         />
         <Route
-          path='/profile/orders'
+          path="/profile/orders"
           element={
             <ProtectedRoute>
               <ProfileOrders />
             </ProtectedRoute>
           }
         />
-        <Route path='/feed/:number' element={<OrderInfo />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path="/feed/:number" element={<OrderInfo />} />
+        <Route path="/ingredients/:id" element={<IngredientDetails />} />
         <Route
-          path='/profile/orders/:number'
+          path="/profile/orders/:number"
           element={
             <ProtectedRoute>
               <OrderInfo />
@@ -133,7 +141,7 @@ export const App = () => {
       {isModalOpened && backgroundLocation && (
         <Routes>
           <Route
-            path='/ingredients/:id'
+            path="/ingredients/:id"
             element={
               <Modal
                 title={'Описание ингредиента'}
@@ -146,7 +154,7 @@ export const App = () => {
             }
           />
           <Route
-            path='/profile/orders/:number'
+            path="/profile/orders/:number"
             element={
               <ProtectedRoute>
                 <Modal
@@ -161,7 +169,7 @@ export const App = () => {
             }
           />
           <Route
-            path='/feed/:number'
+            path="/feed/:number"
             element={
               <Modal
                 title={'Заказ'}

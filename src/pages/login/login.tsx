@@ -8,6 +8,7 @@ import {
   removeErrorText
 } from '../../slices/stellarBurgerSlice';
 import { Preloader } from '@ui';
+import { setCookie } from '../../utils/cookie';
 
 export const Login: FC = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,12 @@ export const Login: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(removeErrorText());
-    dispatch(fetchLoginUser(values));
+    dispatch(fetchLoginUser(values))
+      .unwrap()
+      .then((payload) => {
+        setCookie('accessToken', payload.accessToken);
+        localStorage.setItem('refreshToken', payload.refreshToken);
+      });
   };
 
   if (isLoading) {
