@@ -10,7 +10,7 @@ import {
   orderBurgerApi,
   registerUserApi,
   updateUserApi
-} from '@api';
+} from '../utils/burger-api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TConstructorItems,
