@@ -1,4 +1,4 @@
-import { expect, test, describe, jest } from '@jest/globals';
+import { expect, test, describe } from '@jest/globals';
 import { configureStore } from '@reduxjs/toolkit';
 import stellarBurgerSlice, {
   addIngredient,

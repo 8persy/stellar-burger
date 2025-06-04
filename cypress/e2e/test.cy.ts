@@ -51,21 +51,21 @@ afterEach(() => {
 });
 
 describe('Проверка работоспособности приложения', () => {
-  const noBunSelector1 = `[data-cy=no_bun_text_1]`;
-  const noBunSelector2 = `[data-cy=no_bun_text_2]`;
-  const noIngredientsSelector = `[data-cy=no_ingredients_text]`;
-  const bunSelector = `[data-cy=bun_0]`;
-  const ingredientSelector = `[data-cy=ingredient_0]`;
+  const noBun1 = `[data-cy=no_bun_text_1]`;
+  const noBun2 = `[data-cy=no_bun_text_2]`;
+  const noIngredients = `[data-cy=no_ingredients_text]`;
+  const bunSel = `[data-cy=bun_0]`;
+  const ingredientSel = `[data-cy=ingredient_0]`;
 
   it('сервис должен быть доступен по адресу localhost:4000', () => {
   });
 
   it('есть возможность добавлять булку и ингридиенты', () => {
-    cy.get(noBunSelector1).as('noBunText1');
-    cy.get(noBunSelector2).as('noBunText2');
-    cy.get(noIngredientsSelector).as('noIngredientsText');
-    cy.get(bunSelector + ` button`).as('bun');
-    cy.get(ingredientSelector + ` button`).as('ingredient');
+    cy.get(noBun1).as('noBunText1');
+    cy.get(noBun2).as('noBunText2');
+    cy.get(noIngredients).as('noIngredientsText');
+    cy.get(bunSel + ` button`).as('bun');
+    cy.get(ingredientSel + ` button`).as('ingredient');
 
     // Проверяем пустоту перед добавлением
     cy.get('@noBunText1').contains('Выберите булки');
@@ -80,7 +80,7 @@ describe('Проверка работоспособности приложени
   });
 
   it('проверка открытия и закрытия модального окна ингридиента', () => {
-    const ingredient = cy.get(`bunSelector`);
+    const ingredient = cy.get(`bunSel`);
     ingredient.click();
 
     cy.get(`[data-cy=ingredient_modal]`);
@@ -88,8 +88,8 @@ describe('Проверка работоспособности приложени
   });
 
   it('проверка нового заказа', () => {
-    const bun = cy.get(bunSelector + ` button`);
-    const ingredient = cy.get(ingredientSelector + ` button`);
+    const bun = cy.get(bunSel + ` button`);
+    const ingredient = cy.get(ingredientSel + ` button`);
     bun.click();
     ingredient.click({ multiple: true });
 
@@ -107,9 +107,9 @@ describe('Проверка работоспособности приложени
       cy.get(`[data-cy=new_order_number]`).contains(newOrder.order.number);
       cy.get(`[data-cy=close_modal_btn]`).click();
 
-      cy.get(noBunSelector1).as('noBunText1');
-      cy.get(noBunSelector2).as('noBunText2');
-      cy.get(noIngredientsSelector).as('noIngredientsText');
+      cy.get(noBun1).as('noBunText1');
+      cy.get(noBun2).as('noBunText2');
+      cy.get(noIngredients).as('noIngredientsText');
 
       cy.get('@noBunText1').contains('Выберите булки');
       cy.get('@noBunText2').contains('Выберите булки');
