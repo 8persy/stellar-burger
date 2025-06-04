@@ -1,8 +1,6 @@
 const API_URL = Cypress.env('BURGER_API_URL');
 
-Cypress.on('uncaught:exception', () => {
-  return false;
-});
+Cypress.on('uncaught:exception', () => false);
 
 beforeEach(() => {
   window.localStorage.setItem('refreshToken', 'testRefreshToken');
@@ -57,8 +55,7 @@ describe('Проверка работоспособности приложени
   const bunSel = `[data-cy=bun_0]`;
   const ingredientSel = `[data-cy=ingredient_0]`;
 
-  it('сервис должен быть доступен по адресу localhost:4000', () => {
-  });
+  it('сервис должен быть доступен по адресу localhost:4000', () => {});
 
   it('есть возможность добавлять булку и ингридиенты', () => {
     cy.get(noBun1).as('noBunText1');
