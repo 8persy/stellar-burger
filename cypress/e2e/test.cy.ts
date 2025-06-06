@@ -55,33 +55,66 @@ describe('Проверка работоспособности приложени
   const bunSel = `[data-cy=bun_0]`;
   const ingredientSel = `[data-cy=ingredient_0]`;
 
-  it('сервис должен быть доступен по адресу localhost:4000', () => {});
+  it('сервис должен быть доступен по адресу localhost:4000', () => {
+    cy.url().should('include', 'localhost:4000');
+  });
 
-  it('есть возможность добавлять булку и ингридиенты', () => {
+  it('есть возможность добавлять булку и ингридиенты с проверкой соответствия', () => {
     cy.get(noBun1).as('noBunText1');
     cy.get(noBun2).as('noBunText2');
     cy.get(noIngredients).as('noIngredientsText');
-    cy.get(bunSel + ` button`).as('bun');
-    cy.get(ingredientSel + ` button`).as('ingredient');
+    cy.get(bunSel).as('bunElement');
+    cy.get(ingredientSel).as('ingredientElement');
 
     // Проверяем пустоту перед добавлением
     cy.get('@noBunText1').contains('Выберите булки');
     cy.get('@noBunText2').contains('Выберите булки');
     cy.get('@noIngredientsText').contains('Выберите начинку');
 
-    cy.get('@bun').click();
-    cy.get('@ingredient').click({ multiple: true });
+    // Получаем данные ингредиента для проверки
+    cy.get('@bunElement').then(($bun) => {
+      const bunName = $bun.find('[data-cy=ingredient_name]').text();
+      const bunPrice = $bun.find('[data-cy=ingredient_price]').text();
 
-    cy.get(`[data-cy=constructor_section]`).contains('булка');
-    cy.get(`[data-cy=ingredient_element]`);
+      // Добавляем булку
+      cy.get('@bunElement').find('button').click();
+
+      // Проверяем, что в конструкторе появилась именно эта булка
+      cy.get('.constructor-element_pos_top').should('contain', bunName);
+      cy.get('.constructor-element_pos_bottom').should('contain', bunName);
+    });
+
+    // Аналогично для ингредиента
+    cy.get('@ingredientElement').then(($ingredient) => {
+      const ingredientName = $ingredient.find('[data-cy=ingredient_name]').text();
+      const ingredientPrice = $ingredient.find('[data-cy=ingredient_price]').text();
+
+      // Добавляем ингредиент
+      cy.get('@ingredientElement').find('button').first().click();
+
+      // Проверяем, что в конструкторе появился именно этот ингредиент
+      cy.get(`[data-cy=ingredient_element]`).should('contain', ingredientName);
+    });
   });
 
-  it('проверка открытия и закрытия модального окна ингридиента', () => {
-    const ingredient = cy.get(bunSel);
-    ingredient.click();
+  it('проверка открытия и закрытия модального окна ингридиента с проверкой деталей', () => {
+    cy.get(ingredientSel).as('ingredientElement');
 
-    cy.get(`[data-cy=ingredient_modal]`);
-    cy.get(`[data-cy=close_modal_btn]`).click();
+    cy.get('@ingredientElement').then(($ingredient) => {
+      const ingredientName = $ingredient.find('[data-cy=ingredient_name]').text();
+      const ingredientPrice = $ingredient.find('[data-cy=ingredient_price]').text();
+
+      // Открываем модальное окно
+      cy.get('@ingredientElement').first().click();
+
+      // Проверяем, что модальное окно открылось с правильными данными
+      cy.get(`[data-cy=ingredient_modal]`).should('be.visible');
+      cy.get('.text_type_main-medium').should('contain', ingredientName);
+
+      // Закрываем модальное окно
+      cy.get(`[data-cy=close_modal_btn]`).click();
+      cy.get(`[data-cy=ingredient_modal]`).should('not.exist');
+    });
   });
 
   it('проверка нового заказа', () => {
