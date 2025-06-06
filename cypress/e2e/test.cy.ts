@@ -77,7 +77,7 @@ describe('Проверка работоспособности приложени
   });
 
   it('проверка открытия и закрытия модального окна ингридиента', () => {
-    const ingredient = cy.get(`bunSel`);
+    const ingredient = cy.get(bunSel);
     ingredient.click();
 
     cy.get(`[data-cy=ingredient_modal]`);
