@@ -20,7 +20,7 @@ import {
   OrderInfo,
   ProtectedRoute
 } from '@components';
-import { getCookie } from '../../utils/cookie';
+import { getCookie, deleteCookie } from '../../utils/cookie';
 import {
   closeModal,
   fetchFeed,
@@ -45,7 +45,15 @@ export const App = () => {
   const feed = useAppSelector(selectOrders);
   useEffect(() => {
     if (!isAuthenticated && token) {
-      dispatch(getUserThunk()).then(() => dispatch(init()));
+      dispatch(getUserThunk())
+        .unwrap()
+        .then(() => {
+          dispatch(init());
+        })
+        .catch(() => {
+          deleteCookie('accessToken');
+          localStorage.removeItem('refreshToken');
+        });
     } else {
       dispatch(init());
     }

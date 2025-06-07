@@ -10,7 +10,7 @@ import {
   orderBurgerApi,
   registerUserApi,
   updateUserApi
-} from '@api';
+} from '../utils/burger-api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TConstructorItems,
@@ -19,7 +19,6 @@ import {
   TOrder,
   TUser
 } from '@utils-types';
-import { deleteCookie, setCookie } from '../utils/cookie';
 import { v4 as uuidv4 } from 'uuid';
 
 type TInitialState = {
@@ -39,7 +38,7 @@ type TInitialState = {
   errorText: string;
 };
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   ingredients: [],
   loading: false,
   orderModalData: null,
@@ -168,10 +167,13 @@ const stellarBurgerSlice = createSlice({
         state.loading = false;
         state.ingredients = action.payload;
       })
+      .addCase(fetchIngredients.rejected, (state, action) => {
+        state.loading = false;
+      })
       .addCase(fetchNewOrder.pending, (state) => {
         state.orderRequest = true;
       })
-      .addCase(fetchNewOrder.rejected, (state) => {
+      .addCase(fetchNewOrder.rejected, (state, action) => {
         state.orderRequest = false;
       })
       .addCase(fetchNewOrder.fulfilled, (state, action) => {
@@ -187,8 +189,6 @@ const stellarBurgerSlice = createSlice({
       })
       .addCase(fetchLoginUser.fulfilled, (state, action) => {
         state.loading = false;
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
         state.isAuthenticated = true;
       })
       .addCase(fetchRegisterUser.pending, (state) => {
@@ -200,19 +200,15 @@ const stellarBurgerSlice = createSlice({
       })
       .addCase(fetchRegisterUser.fulfilled, (state, action) => {
         state.loading = false;
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
-        setCookie('accessToken', action.payload.accessToken);
         state.isAuthenticated = true;
       })
       .addCase(getUserThunk.pending, (state) => {
         state.loading = true;
+      })
+      .addCase(getUserThunk.rejected, (state, action) => {
+        state.loading = false;
         state.isAuthenticated = false;
         state.user = { name: '', email: '' };
-        deleteCookie('accessToken');
-        localStorage.removeItem('refreshToken');
-      })
-      .addCase(getUserThunk.rejected, (state) => {
-        state.loading = false;
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.loading = false;
@@ -251,8 +247,6 @@ const stellarBurgerSlice = createSlice({
       .addCase(fetchLogout.fulfilled, (state, action) => {
         state.loading = false;
         if (action.payload.success) {
-          localStorage.removeItem('refreshToken');
-          deleteCookie('accessToken');
           state.user = { name: '', email: '' };
           state.isAuthenticated = false;
         }

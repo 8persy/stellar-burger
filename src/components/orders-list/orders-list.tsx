@@ -5,7 +5,8 @@ import { OrdersListUI } from '@ui';
 
 export const OrdersList: FC<OrdersListProps> = memo(({ orders }) => {
   const orderByDate = [...orders].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    (start, end) =>
+      new Date(end.createdAt).getTime() - new Date(start.createdAt).getTime()
   );
 
   return <OrdersListUI orderByDate={orderByDate} />;

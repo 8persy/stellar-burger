@@ -8,7 +8,7 @@ import { useAppSelector } from '../../services/store';
 import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '@ui';
 
-const getOrders = (orders: TOrder[], status: string): number[] =>
+const ordersGet = (orders: TOrder[], status: string): number[] =>
   orders
     .filter((item) => item.status === status)
     .map((item) => item.number)
@@ -19,9 +19,9 @@ export const FeedInfo: FC = () => {
   const total = useAppSelector(selectTotalOrders);
   const totalToday = useAppSelector(selectTodayOrders);
 
-  const readyOrders = getOrders(orders, 'done');
+  const readyOrders = ordersGet(orders, 'done');
 
-  const pendingOrders = getOrders(orders, 'pending');
+  const pendingOrders = ordersGet(orders, 'pending');
 
   return (
     <FeedInfoUI
